@@ -8,10 +8,10 @@
 let fr = 30;  // frame rate
 
 // canvas width. Set to 1200 normally, 1250 if want to monitor frame rate during recording
-let cvw = 1200;
+let cvw = 640;
 
 // canvas height. Ensure 16:9 ratio
-let cvh = 675;
+let cvh = 480;
 
 let scn = 2;  // scene number
 
@@ -418,10 +418,12 @@ class Axes3D {
     constructor(ctx, args) {
         this.s = ctx;
         this.angle = args.angle || 0;  // starting angle
-        this.speed = args.speed || -0.0025;  // how many radians to rotate per frame
+        this.speed = args.speed || 0.0;  // how many radians to rotate per frame - -0.0025
         this.camY = -567;
         this.camRadius = 674 || args.camRadius; // set to about 700 for displaying axes half-screen
         this.model = args.model;
+        //console.log(this.speed);
+        //console.log(args.speed);
     }
 
     /** 2019-02-04
@@ -489,7 +491,7 @@ class Axes3D {
 
         g.push();
         g.rotateX(this.s.PI);
-        g.rotateY(this.s.PI/2);
+        g.rotateY(-1*this.s.PI/2);
         g.model(this.model);
         g.pop();
     }
@@ -829,6 +831,221 @@ class Arrow3D {
         g.pop();
     }
 
+}
+
+/** 2018-12-23
+ * Point3D
+ * Capable of displaying init animations of the point
+ *
+ * ----args list parameters----
+ * @mandatory (number) x, y
+ * @optional (number) radius, start; (array) color
+ */
+ class Point3D {
+    constructor(ctx, args) {
+        this.s = ctx;
+        var res = stdToP5([args.x, args.y, args.z]);
+        this.x = res[0];
+        this.y = res[1];
+        this.z = res[2];
+        this.radius = args.radius || 10;
+        this.start = args.start || 0;
+        this.color = args.color || [255, 255, 0];
+
+        this.timer = new Timer1(frames(0.7));
+        this.t = 0;
+    }
+
+    reset(x, y, z) {
+        var res = stdToP5([x, y, z]);
+        this.x = res[0];
+        this.y = res[1];
+        this.z = res[2];
+    }
+
+    // ----args list----
+    // from [in std coords], to [in std coords], duration [in frames], mode
+    // in draw(), use: if (s.frameCount === getT(time.xxx)) s.variable.move();
+    move(args) {
+        // this is to fix the issue of not being able to move multiple times
+        var new_move = args.to ? stdToP5(args.to): [this.x, this.y, this.z];
+        this.x = new_move[0];
+        this.y = new_move[1];
+        this.z = new_move[2];
+
+        //console.log("original x, y, z: " + args.to);
+        //console.log("original x^2 + y^2: " + (args.to[0]*args.to[0] + args.to[1]*args.to[1]));
+        //console.log("p5 x, y, z: " + this.x, ", " + this.y + ", " +  this.z);
+        //console.log("p5 x^2 + z^2: " + (this.x*this.x + this.z*this.z));
+        /*this.x_o = this.x_d || this.x;
+        this.x_d = args.to ? stdToP5(args.to)[0] : this.x;
+
+        this.y_o = this.y_d || this.y;
+        this.y_d = args.to ? stdToP5(args.to)[1] : this.y;
+
+        this.z_o = this.z_d || this.z;
+        this.z_d = args.to ? stdToP5(args.to)[2] : this.z;
+
+        //this.to_o = this.to_d || this.to;
+        //this.to_d = args.to ? stdToP5(args.to) : this.to;*/
+        this.moved = true;
+        let t = args.duration || frames(2);
+        let m = args.mode === undefined ? 2 : args.mode;
+
+        this.timer = new TimerFactory(t, m);
+    }
+
+    moving() {
+        let t = this.timer.advance();
+        //this.x = this.x_o + t * (this.x_d - this.x_o);
+        //this.y = this.y_o + t * (this.y_d - this.y_o);
+        //this.z = this.z_o + t * (this.z_d - this.z_o);
+        
+        /*console.log("_o" + this.x_o + ", " + this.y_o + ", " + this.z_o);
+        console.log("_d" + this.x_d + ", " + this.y_d + ", " + this.z_d);*/
+        //console.log("point moved to location " + this.x + ", " + this.y + ", " + this.z);
+    }
+
+    show(g) {
+        if (this.moved) {
+            this.moving();
+        }
+
+        g.push();
+        
+        if (this.s.frameCount > this.start) {
+            this.t = this.timer.advance();
+
+            g.noStroke();
+            g.specularMaterial(this.color);
+
+            g.translate(this.x, this.y, 0.0);
+            //g.rotate(this.s.PI, this.v); // frameCount / 77
+            g.rotate(this.s.PI*0.5, this.s.createVector(1.0, 0.0, 0.0)); // frameCount / 77
+            g.cylinder(this.radius, 0.01);
+            
+            // draw the contour
+            /*g.noFill();
+            g.stroke(255, 0, 0);
+            g.strokeWeight((1 - this.t) * this.radius / 3);
+            g.arc(this.x, this.y, this.radius, this.radius, 0, this.t * this.s.TWO_PI);
+
+            // draw the ellipse
+            g.noStroke();
+            g.fill(this.color[0], this.color[1], this.color[2], 255 * this.t);
+            g.ellipse(this.x, this.y, this.radius, this.radius);*/
+        }
+    }
+}
+
+/** 2018-12-23
+ * Circle3D
+ * Capable of displaying init animations of the point
+ *
+ * ----args list parameters----
+ * @mandatory (number) x, y
+ * @optional (number) radius, start; (array) color
+ */
+ class Circle3D {
+    constructor(ctx, args) {
+        this.s = ctx;
+        var res = stdToP5([args.x, args.y, args.z]);
+        this.x = res[0];
+        this.y = res[1];
+        this.z = res[2];
+        //this.y = args.y;
+        //this.z = args.z;
+        this.radius = args.radius || 10;
+        this.start = args.start || 0;
+        this.color = args.color || [255, 255, 0];
+
+        this.timer = new Timer1(frames(0.7));
+        this.t = 0;
+    }
+
+    reset(x, y, z) {
+        var res = stdToP5([x, y, z]);
+        this.x = res[0];
+        this.y = res[1];
+        this.z = res[2];
+        //this.x = x;
+        //this.y = y;
+        //this.z = z;
+    }
+
+    updateRadius(radius) {
+        this.radius = radius;
+    }
+
+    // ----args list----
+    // from [in std coords], to [in std coords], duration [in frames], mode
+    // in draw(), use: if (s.frameCount === getT(time.xxx)) s.variable.move();
+    move(args) {
+        // this is to fix the issue of not being able to move multiple times
+        var new_move = args.to ? stdToP5(args.to): [this.x, this.y, this.z];
+        this.x = new_move[0];
+        this.y = new_move[1];
+        this.z = new_move[2];
+
+        /*this.x_o = this.x_d || this.x;
+        this.x_d = args.to ? stdToP5(args.to)[0] : this.x;
+
+        this.y_o = this.y_d || this.y;
+        this.y_d = args.to ? stdToP5(args.to)[1] : this.y;
+
+        this.z_o = this.z_d || this.z;
+        this.z_d = args.to ? stdToP5(args.to)[2] : this.z;
+
+        //this.to_o = this.to_d || this.to;
+        //this.to_d = args.to ? stdToP5(args.to) : this.to;*/
+        this.moved = true;
+        let t = args.duration || frames(2);
+        let m = args.mode === undefined ? 2 : args.mode;
+
+        this.timer = new TimerFactory(t, m);
+    }
+
+    moving() {
+        let t = this.timer.advance();
+        //this.x = this.x_o + t * (this.x_d - this.x_o);
+        //this.y = this.y_o + t * (this.y_d - this.y_o);
+        //this.z = this.z_o + t * (this.z_d - this.z_o);
+        
+        /*console.log("_o" + this.x_o + ", " + this.y_o + ", " + this.z_o);
+        console.log("_d" + this.x_d + ", " + this.y_d + ", " + this.z_d);*/
+        //console.log("point moved to location " + this.x + ", " + this.y + ", " + this.z);
+    }
+
+    show(g) {
+        if (this.moved) {
+            this.moving();
+        }
+        //console.log(this.x, this.y, this.z);
+        if (this.s.frameCount > this.start) {
+            this.t = this.timer.advance();
+
+            g.noStroke();
+            g.specularMaterial(this.color);
+            
+            //console.log("Circle3D: " + this.x + ", " + this.y + ", " + this.z);
+
+            g.translate(this.x, this.y, this.z);
+            //g.rotate(this.s.PI, this.v); // frameCount / 77
+            g.rotate(this.s.PI*0.5, this.s.createVector(1.0, 0.0, 0.0)); // frameCount / 77
+            g.torus(this.radius, 6);
+            
+            // draw the contour
+            /*g.noFill();
+            g.stroke(255, 0, 0);
+            g.strokeWeight((1 - this.t) * this.radius / 3);
+            g.arc(this.x, this.y, this.radius, this.radius, 0, this.t * this.s.TWO_PI);
+
+            // draw the ellipse
+            g.noStroke();
+            g.fill(this.color[0], this.color[1], this.color[2], 255 * this.t);
+            g.ellipse(this.x, this.y, this.radius, this.radius);*/
+        }
+    }
 }
 
 /** 2019-01-02, 01-13

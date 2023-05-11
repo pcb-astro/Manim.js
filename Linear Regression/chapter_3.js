@@ -32,7 +32,7 @@ const Scene21 = function(s) {
     let txt = [];
     let emps = [];
     s.preload = function() {
-        times = s.loadFont('../lib/font/times.ttf');
+        times = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
 
     s.setup = function() {
@@ -85,11 +85,11 @@ const Scene22 = function(s) {
     s.imgs = [];
     let src = [], times;
     s.preload = function() {
-        src[0] = s.loadImage('./img/2.webp');
-        src[1] = s.loadImage('./img/3.webp');
-        src[2] = s.loadImage('./img/4.webp');
-        src[3] = s.loadImage('../lib/img/3b1b_logo.jpg');
-        times = s.loadFont('../lib/font/times.ttf');
+        src[0] = s.loadImage('http://localhost:8887/manim_js/Manim.js/Linear Regression/img/2.webp');
+        src[1] = s.loadImage('http://localhost:8887/manim_js/Manim.js/Linear Regression/img/3.webp');
+        src[2] = s.loadImage('http://localhost:8887/manim_js/Manim.js/Linear Regression/img/4.webp');
+        src[3] = s.loadImage('http://localhost:8887/manim_js/Manim.js/lib/img/3b1b_logo.jpg');
+        times = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
     s.setup = function() {
         s.frameRate(fr);
@@ -119,7 +119,7 @@ const Scene22 = function(s) {
 const Scene23a = function (s) {
     let tnr;
     s.preload = function () {
-        tnr = s.loadFont('../lib/font/times.ttf');
+        tnr = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
     s.setup = function () {
         s.frameRate(fr);
@@ -149,7 +149,7 @@ const Scene23 = function(s) {
     let g3, tnr;
     let obj = [];
     s.preload = function () {
-        obj[0] = s.loadModel('../lib/obj/axes.obj');
+        obj[0] = s.loadModel('http://localhost:8887/manim_js/Manim.js/lib/obj/axes.obj');
     };
     s.setup = function () {
         setup3D(s);
@@ -193,8 +193,8 @@ const Scene24 = function(s) {
     s.arrows = [];
 
     s.preload = function () {
-        obj[0] = s.loadModel('../lib/obj/axes.obj');
-        tnr = s.loadFont('../lib/font/times.ttf');
+        obj[0] = s.loadModel('http://localhost:8887/manim_js/Manim.js/lib/obj/axes.obj');
+        tnr = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
 
     s.setup = function () {
@@ -267,8 +267,8 @@ const Scene25 = function(s) {
     s.arrows = [];
 
     s.preload = function () {
-        obj[0] = s.loadModel('../lib/obj/axes.obj');
-        tnr = s.loadFont('../lib/font/times.ttf');
+        obj[0] = s.loadModel('http://localhost:8887/manim_js/Manim.js/lib/obj/axes.obj');
+        tnr = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
     s.setup = function () {
         setup3D(s);
@@ -341,8 +341,8 @@ const Scene26 = function(s) {
     let tnr;
     let obj = [];
     s.preload = function () {
-        obj[0] = s.loadModel('../lib/obj/axes.obj');
-        tnr = s.loadFont('../lib/font/times.ttf');
+        obj[0] = s.loadModel('http://localhost:8887/manim_js/Manim.js/lib/obj/axes.obj');
+        tnr = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
 
     s.setup = function () {
@@ -410,8 +410,8 @@ const Scene27 = function(s) {
     let obj = [];
 
     s.preload = function () {
-        obj[0] = s.loadModel('../lib/obj/axes.obj');
-        tnr = s.loadFont('../lib/font/times.ttf');
+        obj[0] = s.loadModel('http://localhost:8887/manim_js/Manim.js/lib/obj/axes.obj');
+        tnr = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
 
     s.setup = function () {
@@ -475,7 +475,7 @@ const Scene27 = function(s) {
         s.pl.showPlane(g3);
         if (SN === 1) {
             s.gd.showGrid(g3);
-            s.txt.show();
+            //s.txt.show();
         }
         //s.grid.show();
         s.image(g3, 0, 0, cvw, cvh);
@@ -497,8 +497,8 @@ const Scene28 = function(s) {
     let obj = [];
 
     s.preload = function () {
-        obj[0] = s.loadModel('../lib/obj/axes.obj');
-        times = s.loadFont('../lib/font/times.ttf');
+        obj[0] = s.loadModel('http://localhost:8887/manim_js/Manim.js/lib/obj/axes.obj');
+        times = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
 
     s.setup = function () {
@@ -565,8 +565,8 @@ const Scene29 = function(s) {
     let dx = 297;
 
     s.preload = function() {
-        comic = s.loadFont('../lib/font/comic.ttf');
-        tnr = s.loadFont('../lib/font/times.ttf');
+        comic = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/comic.ttf');
+        tnr = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/times.ttf');
     };
     s.setup = function () {
         setup2D(s);
@@ -687,8 +687,8 @@ const SceneEnd = function(s) {
     };
     let emoji, comic;
     s.preload = function() {
-        comic = s.loadFont('../lib/font/comic.ttf');
-        emoji = s.loadFont('../lib/font/emoji.ttf');
+        comic = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/comic.ttf');
+        emoji = s.loadFont('http://localhost:8887/manim_js/Manim.js/lib/font/emoji.ttf');
     };
     s.setup = function() {
         setup2D(s);
@@ -715,6 +715,9 @@ function getT(t) {
         return t;
 }
 
-let p = new p5(Scene27);
+document.addEventListener("DOMContentLoaded", function(event) { 
+    let p = new p5(Scene27);
+  });
+//let p = new p5(Scene27);
 
 // fixme: the audio volume doesn't change for 1+?
