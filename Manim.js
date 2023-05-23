@@ -906,6 +906,10 @@ class Arrow3D {
         //console.log("point moved to location " + this.x + ", " + this.y + ", " + this.z);
     }
 
+    updateRadius(radius) {
+        this.radius = radius;
+    }
+    
     show(g) {
         if (this.moved) {
             this.moving();
